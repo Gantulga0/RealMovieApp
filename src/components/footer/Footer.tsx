@@ -1,12 +1,23 @@
+'use client';
 import React from 'react';
 import { Film, Mail, Phone } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Footer = () => {
+  const router = useRouter();
+
+  const handleHomeClick = () => {
+    router.push('/');
+  };
+
   return (
     <div className="w-full flex flex-col items-start self-stretch bg-indigo-700">
       <div className="w-full max-w-[1280px] mx-auto pt-10 pb-10 pr-5 pl-5 md:flex md:gap-32 md:justify-between">
         <div>
-          <button className="font-inter text-xl italic font-bold leading-5 tracking-[0.32px] flex gap-2 items-center text-white">
+          <button
+            className="font-inter text-xl italic font-bold leading-5 tracking-[0.32px] flex gap-2 items-center text-white"
+            onClick={handleHomeClick}
+          >
             <Film />
             MovieZ
           </button>

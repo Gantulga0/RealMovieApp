@@ -37,7 +37,6 @@ const Page = () => {
 
   const router = useRouter();
 
-  // Function to fetch genres
   const getGenresList = async () => {
     try {
       setLoading(true);
@@ -155,7 +154,7 @@ const Page = () => {
 
   return (
     <div>
-      <div className="m-5 flex justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16">
+      <div className="m-5 justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16 max-md: flex max-md:flex-col">
         {!loading && !error && genres.length > 0 && (
           <div className="w-[387px]">
             <h1 className="text-3xl font-bold mb-10">Search results</h1>
