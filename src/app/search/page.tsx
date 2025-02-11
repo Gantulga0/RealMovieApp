@@ -113,11 +113,9 @@ const Page = () => {
 
     const queryParams = new URLSearchParams();
     queryParams.set('genresID', updatedGenres.join(','));
-
     if (searchQuery) {
       queryParams.set('query', searchQuery);
     }
-
     router.push(`/genres?${queryParams.toString()}`);
     setCurrentPage(1);
   };
