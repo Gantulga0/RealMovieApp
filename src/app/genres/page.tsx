@@ -123,8 +123,12 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    getMovies(selectedGenreID);
-  }, [selectedGenreID, currentPage]);
+    if (searchedGenreID) {
+      const genreIds = searchedGenreID.split(',');
+      setSelectedGenreID(genreIds);
+      getMovies(genreIds);
+    }
+  }, [searchedGenreID, currentPage]);
 
   const handleMovieClick = (movieId: number) => {
     router.push(`/detail/${movieId}`);

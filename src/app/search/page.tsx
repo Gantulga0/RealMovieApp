@@ -113,9 +113,11 @@ const Page = () => {
 
     const queryParams = new URLSearchParams();
     queryParams.set('genresID', updatedGenres.join(','));
+
     if (searchQuery) {
       queryParams.set('query', searchQuery);
     }
+
     router.push(`/genres?${queryParams.toString()}`);
     setCurrentPage(1);
   };
@@ -150,6 +152,16 @@ const Page = () => {
 
   const handleMovieClick = (movieId: number) => {
     router.push(`/detail/${movieId}`);
+  };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    const queryParams = new URLSearchParams(window.location.search);
+    queryParams.set('query', query);
+    router.push(`/search?${queryParams.toString()}`);
+
+    getMovies(selectedGenreID, query);
   };
 
   return (
@@ -187,43 +199,46 @@ const Page = () => {
           </div>
         )}
         <Separator orientation="vertical" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
-          {movies.length > 0 ? (
-            movies.map((movie) => (
-              <Card
-                key={movie.id}
-                className="w-full max-w-[150px] mx-auto cursor-pointer "
-                onClick={() => handleMovieClick(movie.id)}
-              >
-                <CardHeader className="p-0">
-                  <Image
-                    src={`${process.env.TMDB_IMAGE_SERVICE_URL}/w1280/${movie.poster_path}`}
-                    alt={movie.title}
-                    className="object-cover rounded"
-                    width={250}
-                    height={350}
-                    quality={100}
-                  />
-                </CardHeader>
-                <CardFooter className="flex flex-col p-2 items-start">
-                  <div className="flex items-center gap-x-1">
-                    <Star className="text-yellow-400 w-4 fill-yellow-400" />
-                    <p className="text-sm leading-5 font-medium">
-                      {movie.vote_average}
-                    </p>
-                    <p className="text-muted-foreground text-xs pt-[2px]">
-                      /10
-                    </p>
-                  </div>
-                  <div className="h-14 overflow-hidden text-ellipsis line-clamp-2 text-lg text-foreground">
-                    {movie.title}
-                  </div>
-                </CardFooter>
-              </Card>
-            ))
-          ) : (
-            <p>No movies found for the selected genres.</p>
-          )}
+        <div>
+          <p className="text-lg font-semibold">Total Movies: {totalMovies}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
+            {movies.length > 0 ? (
+              movies.map((movie) => (
+                <Card
+                  key={movie.id}
+                  className="w-full max-w-[150px] mx-auto cursor-pointer "
+                  onClick={() => handleMovieClick(movie.id)}
+                >
+                  <CardHeader className="p-0">
+                    <Image
+                      src={`${process.env.TMDB_IMAGE_SERVICE_URL}/w1280/${movie.poster_path}`}
+                      alt={movie.title}
+                      className="object-cover rounded"
+                      width={250}
+                      height={350}
+                      quality={100}
+                    />
+                  </CardHeader>
+                  <CardFooter className="flex flex-col p-2 items-start">
+                    <div className="flex items-center gap-x-1">
+                      <Star className="text-yellow-400 w-4 fill-yellow-400" />
+                      <p className="text-sm leading-5 font-medium">
+                        {movie.vote_average}
+                      </p>
+                      <p className="text-muted-foreground text-xs pt-[2px]">
+                        /10
+                      </p>
+                    </div>
+                    <div className="h-14 overflow-hidden text-ellipsis line-clamp-2 text-lg text-foreground">
+                      {movie.title}
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : (
+              <p>No movies found for the selected genres.</p>
+            )}
+          </div>
         </div>
       </div>
       <Pagination className="mt-[32px] flex justify-end">
