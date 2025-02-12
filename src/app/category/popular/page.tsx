@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Movie } from '@/types/movie-type';
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
-import { Star, ArrowRight } from 'lucide-react';
+import { Star } from 'lucide-react';
 import {
   Pagination,
   PaginationContent,

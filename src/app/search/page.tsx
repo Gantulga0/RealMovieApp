@@ -31,7 +31,6 @@ const Page = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const searchParams = useSearchParams();
-  const searchedGenreID = searchParams.get('genresID');
   const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
   const API_TOKEN = process.env.API_TOKEN;
 
@@ -150,16 +149,6 @@ const Page = () => {
 
   const handleMovieClick = (movieId: number) => {
     router.push(`/detail/${movieId}`);
-  };
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-
-    const queryParams = new URLSearchParams(window.location.search);
-    queryParams.set('query', query);
-    router.push(`/search?${queryParams.toString()}`);
-
-    getMovies(selectedGenreID, query);
   };
 
   return (

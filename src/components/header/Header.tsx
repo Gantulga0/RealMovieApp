@@ -30,9 +30,7 @@ export function Header() {
   const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
   const API_TOKEN = process.env.API_TOKEN;
 
-  const [loading, setLoading] = useState<boolean>(false);
   const [genreList, setGenreList] = useState<any[]>([]);
-  const [selectedGenre, setSelectedGenre] = useState<string>('');
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === 'dark';
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -43,7 +41,6 @@ export function Header() {
   const router = useRouter();
   const getMovieData = async () => {
     try {
-      setLoading(true);
       const genreResponse = await axios.get(
         `${TMDB_BASE_URL}/genre/movie/list?language=en`,
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
@@ -52,13 +49,11 @@ export function Header() {
     } catch (err) {
       setError('An error occurred while fetching data.');
     } finally {
-      setLoading(false);
     }
   };
 
   const getSearchData = async (query: string) => {
     try {
-      setLoading(true);
       const searchResponse = await axios.get(
         `${TMDB_BASE_URL}/search/movie?query=${query}&language=en-US&page=1`,
         { headers: { Authorization: `Bearer ${API_TOKEN}` } }
@@ -68,12 +63,10 @@ export function Header() {
     } catch (err) {
       setError('An error occurred while fetching search data.');
     } finally {
-      setLoading(false);
     }
   };
 
   const handleGenreSelect = (genreId: string) => {
-    setSelectedGenre(genreId);
     router.push(`/genres?genresID=${genreId}`);
   };
 

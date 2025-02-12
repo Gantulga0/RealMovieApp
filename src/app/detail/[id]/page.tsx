@@ -8,9 +8,9 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 
-const page = () => {
+const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [movie, setMovie] = useState<Movie | null>(null);
   const [cast, setCast] = useState<any[]>([]);
@@ -293,4 +293,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
