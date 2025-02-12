@@ -25,18 +25,20 @@ import { Badge } from '../ui/badge';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Image from 'next/image';
+import { Movie } from '@/types/movie-type';
+import { Genre } from '@/types/genre-type';
 
 export function Header() {
   const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
   const API_TOKEN = process.env.API_TOKEN;
 
-  const [genreList, setGenreList] = useState<any[]>([]);
+  const [genreList, setGenreList] = useState<Genre[]>([]);
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === 'dark';
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string>('');
-  const [moviesList, setMoviesList] = useState<any[]>([]);
+  const [moviesList, setMoviesList] = useState<Movie[]>([]);
 
   const router = useRouter();
   const getMovieData = async () => {
@@ -62,6 +64,7 @@ export function Header() {
       setMoviesList(searchResponse.data.results);
     } catch (err) {
       setError('An error occurred while fetching search data.');
+      console.log(err);
     } finally {
     }
   };
@@ -89,7 +92,7 @@ export function Header() {
     }
   };
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
@@ -208,7 +211,7 @@ export function Header() {
                 }
                 onClick={() => handleSeeAllResult()}
               >
-                See all result for : "{searchQuery}"
+                See all result for : &quot;{searchQuery}&quot;
               </div>
             </div>
           ) : (

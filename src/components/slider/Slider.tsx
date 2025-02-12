@@ -13,9 +13,11 @@ import { Movie } from '@/types/movie-type';
 import { Star } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
-
+interface Trailer {
+  site: string;
+  key: string;
+}
 const Slider: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [nowPlayingMoviesData, setNowPlayingMoviesData] = useState<Movie[]>([]);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
@@ -26,7 +28,6 @@ const Slider: React.FC = () => {
 
   const getMovieData = async () => {
     try {
-      setLoading(true);
       const nowPlayingResponse = await axios.get(
         `${TMDB_BASE_URL}/movie/now_playing?language=en-US&page=1`,
         {
@@ -37,12 +38,11 @@ const Slider: React.FC = () => {
       );
       setNowPlayingMoviesData(nowPlayingResponse.data.results);
     } catch (err) {
+      console.error(err);
       setError('Error fetching data');
       if (axios.isAxiosError(err)) {
         setError(err.response?.data.status_message || 'API Error');
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -59,7 +59,7 @@ const Slider: React.FC = () => {
       const trailers = trailerResponse.data.results;
       if (trailers.length > 0) {
         const youtubeTrailer = trailers.find(
-          (trailer: any) => trailer.site === 'YouTube'
+          (trailer: Trailer) => trailer.site === 'YouTube'
         );
         if (youtubeTrailer) {
           setTrailerUrl(`https://www.youtube.com/embed/${youtubeTrailer.key}`);

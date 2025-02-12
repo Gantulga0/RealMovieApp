@@ -9,14 +9,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
+import { Cast } from '@/types/cast-type';
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [cast, setCast] = useState<any[]>([]);
+  const [cast, setCast] = useState<Cast[]>([]);
   const [director, setDirector] = useState<string | null>(null);
   const [writers, setWriters] = useState<string[]>([]);
-  const [similarMovies, setSimilarMovies] = useState<any[]>([]);
+  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string>('');
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
 
