@@ -13,10 +13,8 @@ import { Movie } from '@/types/movie-type';
 import { Star } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
-interface Trailer {
-  site: string;
-  key: string;
-}
+import { Trailer } from '@/types/youtube-type';
+
 const Slider: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [nowPlayingMoviesData, setNowPlayingMoviesData] = useState<Movie[]>([]);

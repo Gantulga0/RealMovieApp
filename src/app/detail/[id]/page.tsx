@@ -10,10 +10,9 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { Cast } from '@/types/cast-type';
-interface Trailer {
-  type: string;
-  key: string;
-}
+import { Trailer } from '@/types/youtube-type';
+import { formatRuntime } from '@/utils/formatRuntime';
+
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [movie, setMovie] = useState<Movie | null>(null);
@@ -104,12 +103,6 @@ const Page = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!movie) return <p>No movie details available.</p>;
-
-  const formatRuntime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
-  };
 
   const handleSeeMoreClick = () => {
     router.push(`/category/similar/${id}`);

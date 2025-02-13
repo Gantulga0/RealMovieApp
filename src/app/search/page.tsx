@@ -3,21 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Movie } from '@/types/movie-type';
-import Image from 'next/image';
-import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from '@/components/ui/pagination';
-
-import { ChevronRight, Star } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import PaginationControl from '@/components/Pagination';
+import MovieList from '@/components/MovieList';
+import GenreSelector from '@/components/GenreSelector';
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -119,26 +108,6 @@ const Page = () => {
     setCurrentPage(1);
   };
 
-  const createPageArray = (totalPages: number, currentPage: number) => {
-    const pages: (number | string)[] = [];
-
-    if (currentPage > 1) {
-      pages.push(currentPage - 1);
-    }
-    pages.push(currentPage);
-    if (currentPage < totalPages) {
-      pages.push(currentPage + 1);
-    }
-
-    if (currentPage < totalPages - 2) {
-      pages.push('...');
-    }
-
-    return pages;
-  };
-
-  const pageNumbers = createPageArray(totalPages, currentPage);
-
   useEffect(() => {
     getGenresList();
   }, []);
@@ -152,125 +121,25 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <div className="m-5 justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16 max-md: flex max-md:flex-col">
-        {!loading && !error && genres.length > 0 && (
-          <div className="w-[387px]">
-            <h1 className="text-3xl font-bold mb-10">Search results</h1>
+    <div className="m-5 flex justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16 max-md:flex-col">
+      {!loading && !error && genres.length > 0 && (
+        <GenreSelector
+          genres={genres}
+          selectedGenreID={selectedGenreID}
+          onGenreSelect={handleGenreSelect}
+        />
+      )}
 
-            <h1 className="font-bold text-2xl">Genres</h1>
-            <h2 className="text-base font-bold mb-5 mt-2">
-              See list of movies by genre
-            </h2>
-            {genres.length > 0 &&
-              genres.map((genre) => {
-                const isSelected = selectedGenreID.includes(
-                  genre.id.toString()
-                );
-                return (
-                  <Badge
-                    key={genre.id}
-                    variant="outline"
-                    className={`${
-                      isSelected
-                        ? 'bg-black text-white dark:bg-white dark:text-black m-2 cursor-pointer'
-                        : 'm-2 cursor-pointer'
-                    }`}
-                    onClick={() => handleGenreSelect(genre.id.toString())}
-                  >
-                    {genre.name}
-                    <ChevronRight className="stroke-1" />
-                  </Badge>
-                );
-              })}
-          </div>
-        )}
-        <Separator orientation="vertical" />
-        <div>
-          <p className="text-lg font-semibold">Total Movies: {totalMovies}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <Card
-                  key={movie.id}
-                  className="w-full max-w-[150px] mx-auto cursor-pointer "
-                  onClick={() => handleMovieClick(movie.id)}
-                >
-                  <CardHeader className="p-0">
-                    <Image
-                      src={`${process.env.TMDB_IMAGE_SERVICE_URL}/w1280/${movie.poster_path}`}
-                      alt={movie.title}
-                      className="object-cover rounded"
-                      width={250}
-                      height={350}
-                      quality={100}
-                    />
-                  </CardHeader>
-                  <CardFooter className="flex flex-col p-2 items-start">
-                    <div className="flex items-center gap-x-1">
-                      <Star className="text-yellow-400 w-4 fill-yellow-400" />
-                      <p className="text-sm leading-5 font-medium">
-                        {movie.vote_average}
-                      </p>
-                      <p className="text-muted-foreground text-xs pt-[2px]">
-                        /10
-                      </p>
-                    </div>
-                    <div className="h-14 overflow-hidden text-ellipsis line-clamp-2 text-lg text-foreground">
-                      {movie.title}
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))
-            ) : (
-              <p>No movies found for the selected genres.</p>
-            )}
-          </div>
-        </div>
+      <div className="separator orientation-vertical" />
+      <div>
+        <p className="text-lg font-semibold">Total Movies: {totalMovies}</p>
+        <MovieList movies={movies} onMovieClick={handleMovieClick} />
+        <PaginationControl
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
-      <Pagination className="mt-[32px] flex justify-end">
-        <PaginationContent>
-          {currentPage > 1 && (
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              />
-            </PaginationItem>
-          )}
-
-          {pageNumbers.map((page, index) => {
-            const key = `${page}-${index}`;
-            if (page === '...') {
-              return (
-                <PaginationItem key={key}>
-                  <PaginationLink href="#">...</PaginationLink>
-                </PaginationItem>
-              );
-            } else {
-              return (
-                <PaginationItem key={key}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === page}
-                    onClick={() => setCurrentPage(page as number)}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            }
-          })}
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   );
 };
