@@ -124,7 +124,7 @@ export function Header() {
             MovieZ
           </button>
         </div>
-
+        {/* THis is Desktop version */}
         <div className="hidden md:flex md:gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex w-[97px] h-[36px] p-2.5 px-4 justify-center items-center gap-2 rounded-md border hover:bg-slate-100 duration-75 ease-in-out">
@@ -164,7 +164,7 @@ export function Header() {
               {firstFiveMovies.map((movie) => (
                 <Card
                   key={movie.id}
-                  className="w-full max-w-[577px] mx-auto rounded-none cursor-pointer flex p-4 justify-between items-end max-md:max-w-[450px]"
+                  className="w-full max-w-[577px] mx-auto rounded-none cursor-pointer flex p-4 justify-between items-end max-md:max-w-[450px] transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:opacity-90"
                   onClick={() => handleMovieClick(movie.id)}
                 >
                   <div className="flex">
@@ -234,7 +234,7 @@ export function Header() {
               onChange={handleSearchChange}
             />
           </div>
-
+          {/* this is mobile version */}
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -265,7 +265,7 @@ export function Header() {
               {firstFiveMovies.map((movie) => (
                 <Card
                   key={movie.id}
-                  className="w-full max-w-[577px] mx-auto rounded-none cursor-pointer flex p-4 justify-between items-end max-md:max-w-[450px]"
+                  className="w-full max-w-[577px] mx-auto rounded-none cursor-pointer flex p-4 justify-between items-end max-md:max-w-[450px] transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:opacity-90"
                   onClick={() => handleMovieClick(movie.id)}
                 >
                   <div className="flex">

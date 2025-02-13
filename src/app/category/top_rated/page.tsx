@@ -6,6 +6,7 @@ import { Movie } from '@/types/movie-type';
 import { useRouter } from 'next/navigation';
 import PaginationControl from '@/components/Pagination';
 import MovieList from '@/components/MovieList';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const TopRatedMovie = () => {
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,17 @@ const TopRatedMovie = () => {
           Top Rated Movies
         </h3>
       </div>
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
+          {Array.from({ length: 20 }).map((_, index) => (
+            <div key={index} className="w-full max-w-[200px] mx-auto">
+              <Skeleton className="w-full h-[350px] mb-4" />
+              <Skeleton className="w-full h-4 mb-2" />
+              <Skeleton className="w-24 h-4" />
+            </div>
+          ))}
+        </div>
+      )}
       {error && <p>Error: {error}</p>}
       {topRatedMoviesData && topRatedMoviesData.length > 0 ? (
         <MovieList

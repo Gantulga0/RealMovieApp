@@ -6,6 +6,7 @@ import { Movie } from '@/types/movie-type';
 import { useRouter } from 'next/navigation';
 import PaginationControl from '@/components/Pagination';
 import MovieList from '@/components/MovieList';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const PopularMovie = () => {
   const [loading, setLoading] = useState(false);
@@ -59,13 +60,26 @@ const PopularMovie = () => {
           Popular
         </h3>
       </div>
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
+          {Array.from({ length: 20 }).map((_, index) => (
+            <div key={index} className="w-full max-w-[200px] mx-auto">
+              <Skeleton className="w-full h-[350px] mb-4" />
+              <Skeleton className="w-full h-4 mb-2" />
+              <Skeleton className="w-24 h-4" />
+            </div>
+          ))}
+        </div>
+      )}
+
       {error && <p>Error: {error}</p>}
-      {popularMoviesData && popularMoviesData.length > 0 ? (
+
+      {popularMoviesData && popularMoviesData.length > 0 && !loading ? (
         <MovieList movies={popularMoviesData} onMovieClick={handleMovieClick} />
       ) : (
-        <p>No popular movies available.</p>
+        <p></p>
       )}
+
       <PaginationControl
         currentPage={currentPage}
         totalPages={totalPages}

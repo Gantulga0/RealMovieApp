@@ -77,7 +77,7 @@ const PopularMovie = () => {
           {firstTenMovies.map((movie) => (
             <Card
               key={movie.id}
-              className="w-full max-w-[200px] mx-auto cursor-pointer"
+              className="w-full max-w-[200px] mx-auto cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:opacity-80"
               onClick={() => handleMovieClick(movie.id)}
             >
               <CardHeader className="p-0">

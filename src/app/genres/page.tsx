@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import GenreSelector from '@/components/GenreSelector';
 import MovieList from '@/components/MovieList';
 import PaginationControl from '@/components/Pagination';
 import { Movie } from '@/types/movie-type';
+import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,27 +96,40 @@ const Page = () => {
 
   return (
     <div className="m-5 flex justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16 max-md:flex-col">
-      {!loading && !error && genres.length > 0 && (
-        <GenreSelector
-          genres={genres}
-          selectedGenreID={selectedGenreID}
-          onGenreSelect={handleGenreSelect}
-        />
-      )}
+      <GenreSelector
+        genres={genres}
+        selectedGenreID={selectedGenreID}
+        onGenreSelect={handleGenreSelect}
+      />
 
       <div className="hidden max-md:block pt-5 pl-3 font-bold text-xl">
         {totalMovies} titles
       </div>
 
       <div className="separator orientation-vertical" />
+      {movies.length === 0 && !loading && !error && (
+        <div className="text-center py-5">
+          <p className="text-lg font-semibold border w-[800px] h-[95px] flex items-center justify-center rounded-xl">
+            No results found
+          </p>
+        </div>
+      )}
+      {loading && (
+        <div className="flex justify-center items-center py-10">
+          <FaSpinner className="animate-spin text-4xl text-gray-600" />
+        </div>
+      )}
       <div>
-        <MovieList movies={movies} onMovieClick={handleMovieClick} />
-
-        <PaginationControl
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        {!loading && !error && (
+          <MovieList movies={movies} onMovieClick={handleMovieClick} />
+        )}
+        {movies.length > 0 && !loading && (
+          <PaginationControl
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
     </div>
   );

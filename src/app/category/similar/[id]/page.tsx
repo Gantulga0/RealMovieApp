@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Movie } from '@/types/movie-type';
 import PaginationControl from '@/components/Pagination';
 import MovieList from '@/components/MovieList';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const SimilarMoviesPage = () => {
   const router = useRouter();
@@ -55,7 +56,17 @@ const SimilarMoviesPage = () => {
   return (
     <div className="m-5 flex flex-col justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-20">
       <h3 className="font-inter text-[24px] font-semibold">Similar Movies</h3>
-      {loading && <p>Loading similar movies...</p>}
+      {loading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
+          {Array.from({ length: 20 }).map((_, index) => (
+            <div key={index} className="w-full max-w-[200px] mx-auto">
+              <Skeleton className="w-full h-[350px] mb-4" />
+              <Skeleton className="w-full h-4 mb-2" />
+              <Skeleton className="w-24 h-4" />
+            </div>
+          ))}
+        </div>
+      )}
       {error && <p className="text-red-500">{error}</p>}
       <MovieList movies={similarMoviesData} onMovieClick={handleMovieClick} />
 

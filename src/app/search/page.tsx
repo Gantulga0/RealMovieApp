@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationControl from '@/components/Pagination';
 import MovieList from '@/components/MovieList';
 import GenreSelector from '@/components/GenreSelector';
+import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -122,23 +123,29 @@ const Page = () => {
 
   return (
     <div className="m-5 flex justify-between max-w-[1280px] mx-auto pt-14 pr-5 pl-5 mt-16 max-md:flex-col">
-      {!loading && !error && genres.length > 0 && (
-        <GenreSelector
-          genres={genres}
-          selectedGenreID={selectedGenreID}
-          onGenreSelect={handleGenreSelect}
-        />
-      )}
-
+      <GenreSelector
+        genres={genres}
+        selectedGenreID={selectedGenreID}
+        onGenreSelect={handleGenreSelect}
+      />
       <div className="separator orientation-vertical" />
+      {loading && (
+        <div className="flex justify-center items-center py-10">
+          <FaSpinner className="animate-spin text-4xl text-gray-600" />
+        </div>
+      )}
       <div>
         <p className="text-lg font-semibold">Total Movies: {totalMovies}</p>
-        <MovieList movies={movies} onMovieClick={handleMovieClick} />
-        <PaginationControl
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        {!loading && !error && (
+          <MovieList movies={movies} onMovieClick={handleMovieClick} />
+        )}
+        {movies.length > 0 && !loading && (
+          <PaginationControl
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
     </div>
   );
