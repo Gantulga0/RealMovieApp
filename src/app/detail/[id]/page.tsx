@@ -10,7 +10,10 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { Cast } from '@/types/cast-type';
-
+interface Trailer {
+  type: string;
+  key: string;
+}
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [movie, setMovie] = useState<Movie | null>(null);
@@ -68,18 +71,18 @@ const Page = () => {
         setCast(creditsResponse.data.cast);
 
         const directorData = creditsResponse.data.crew.find(
-          (member: any) => member.job === 'Director'
+          (member: Cast) => member.job === 'Director'
         );
         const writerData = creditsResponse.data.crew.filter(
-          (member: any) => member.job === 'Writer'
+          (member: Cast) => member.job === 'Writer'
         );
 
         setDirector(directorData ? directorData.name : null);
-        setWriters(writerData.map((writer: any) => writer.name));
+        setWriters(writerData.map((writer: Cast) => writer.name));
         setSimilarMovies(similarMoviesResponse.data.results);
 
         const trailer = videoResponse.data.results.find(
-          (video: any) => video.type === 'Trailer'
+          (video: Trailer) => video.type === 'Trailer'
         );
         setTrailerUrl(
           trailer ? `https://www.youtube.com/embed/${trailer.key}` : null
