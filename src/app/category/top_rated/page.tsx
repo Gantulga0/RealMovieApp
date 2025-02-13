@@ -3,18 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Movie } from '@/types/movie-type';
-import { Card, CardFooter, CardHeader } from '@/components/ui/card';
-import Image from 'next/image';
-import { Star } from 'lucide-react';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from '@/components/ui/pagination';
 import { useRouter } from 'next/navigation';
+import PaginationControl from '@/components/Pagination';
+import MovieList from '@/components/MovieList';
 
 const TopRatedMovie = () => {
   const [loading, setLoading] = useState(false);
@@ -56,26 +47,6 @@ const TopRatedMovie = () => {
     getMovieData(currentPage);
   }, [currentPage]);
 
-  const createPageArray = (totalPages: number, currentPage: number) => {
-    const pages: (number | string)[] = [];
-
-    if (currentPage > 1) {
-      pages.push(currentPage - 1);
-    }
-    pages.push(currentPage);
-    if (currentPage < totalPages) {
-      pages.push(currentPage + 1);
-    }
-
-    if (currentPage < totalPages - 2) {
-      pages.push('...');
-    }
-
-    return pages;
-  };
-
-  const pageNumbers = createPageArray(totalPages, currentPage);
-
   const handleMovieClick = (movieId: number) => {
     router.push(`/detail/${movieId}`);
   };
@@ -90,86 +61,19 @@ const TopRatedMovie = () => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {topRatedMoviesData && topRatedMoviesData.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pt-9">
-          {topRatedMoviesData.map((movie) => (
-            <Card
-              key={movie.id}
-              className="w-full max-w-[200px] mx-auto cursor-pointer"
-              onClick={() => handleMovieClick(movie.id)}
-            >
-              <CardHeader className="p-0">
-                <Image
-                  src={`${process.env.TMDB_IMAGE_SERVICE_URL}/w1280/${movie.poster_path}`}
-                  alt={movie.title}
-                  className="object-cover rounded"
-                  width={250}
-                  height={350}
-                  quality={100}
-                />
-              </CardHeader>
-              <CardFooter className="flex flex-col p-2 items-start ">
-                <div className="flex items-center gap-x-1">
-                  <Star className="text-yellow-400 w-4 fill-yellow-400" />
-                  <p className="text-sm leading-5 font-medium">
-                    {movie.vote_average}
-                  </p>
-                  <p className="text-muted-foreground text-xs pt-[2px]">/10</p>
-                </div>
-                <div className="h-14 overflow-hidden text-ellipsis line-clamp-2 text-lg text-foreground">
-                  {movie.title}
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        <MovieList
+          movies={topRatedMoviesData}
+          onMovieClick={handleMovieClick}
+        />
       ) : (
         <p>No top-rated movies available.</p>
       )}
 
-      <Pagination className="mt-[32px] flex justify-end">
-        <PaginationContent>
-          {currentPage > 1 && (
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              />
-            </PaginationItem>
-          )}
-
-          {pageNumbers.map((page, index) => {
-            const key = `${page}-${index}`;
-            if (page === '...') {
-              return (
-                <PaginationItem key={key}>
-                  <PaginationLink href="#">...</PaginationLink>
-                </PaginationItem>
-              );
-            } else {
-              return (
-                <PaginationItem key={key}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === page}
-                    onClick={() => setCurrentPage(page as number)}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            }
-          })}
-
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <PaginationControl
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

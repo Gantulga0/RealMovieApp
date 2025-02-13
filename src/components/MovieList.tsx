@@ -16,7 +16,7 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onMovieClick }) => {
         movies.map((movie) => (
           <Card
             key={movie.id}
-            className="w-full max-w-[150px] mx-auto cursor-pointer"
+            className="w-full max-w-[230px] mx-auto cursor-pointer"
             onClick={() => onMovieClick(movie.id)}
           >
             <CardHeader className="p-0">

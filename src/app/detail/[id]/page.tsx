@@ -12,6 +12,7 @@ import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { Cast } from '@/types/cast-type';
 import { Trailer } from '@/types/youtube-type';
 import { formatRuntime } from '@/utils/formatRuntime';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -100,7 +101,19 @@ const Page = () => {
     getMovieDetails();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="container mx-auto p-6 max-w-[1100px]">
+        <Skeleton className="w-2/3 h-8 mb-2" />
+        <Skeleton className="w-1/2 h-6 mb-4" />
+        <Skeleton className="w-80 h-40 mb-8" />
+        <Skeleton className="w-full h-60 mb-8" />
+        <Skeleton className="w-1/3 h-6 mb-4" />
+        <Skeleton className="w-full h-16 mb-4" />
+        <Skeleton className="w-1/3 h-6 mb-4" />
+        <Skeleton className="w-1/2 h-6 mb-4" />
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
   if (!movie) return <p>No movie details available.</p>;
 
