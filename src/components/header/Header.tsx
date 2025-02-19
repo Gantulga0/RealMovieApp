@@ -49,6 +49,7 @@ export function Header() {
       );
       setGenreList(genreResponse.data.genres);
     } catch (err) {
+      console.error(err);
       setError('An error occurred while fetching data.');
     } finally {
     }
@@ -312,7 +313,7 @@ export function Header() {
                 }
                 onClick={() => handleSeeAllResult()}
               >
-                See all result for : "{searchQuery}"
+                See all result for : &quot;{searchQuery}&quot;
               </div>
             </div>
           ) : (

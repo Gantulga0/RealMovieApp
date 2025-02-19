@@ -40,6 +40,7 @@ const Page = () => {
         );
         setGenres(response.data.genres);
       } catch (err) {
+        console.error(err);
         setError('An error occurred while fetching genres.');
       } finally {
         setLoading(false);
@@ -70,6 +71,7 @@ const Page = () => {
           setTotalPages(response.data.total_pages);
           setTotalMovies(response.data.total_results);
         } catch (err) {
+          console.error(err);
           setError('An error occurred while fetching movies.');
         } finally {
           setLoading(false);

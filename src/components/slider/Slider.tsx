@@ -66,6 +66,7 @@ const Slider: React.FC = () => {
         }
       }
     } catch (err) {
+      console.error(err);
       setError('Error fetching trailer');
     }
   };
